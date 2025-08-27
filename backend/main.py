@@ -25,8 +25,10 @@ app.add_middleware(
 # Hardcoded Product Data
 # ------------------------------
 PRODUCTS = [
-    {"id": 1, "name": "TikTok Hoodie", "price": "$39.99", "shipping": "3-5 days", "colours": "blue, red, green", "description": "made of cotton"},
-    {"id": 2, "name": "TikTok Cap", "price": "$19.99", "shipping": "2-3 days", "colours": "black, white", "description": "moisture wicking, 5 panel"},
+    {"id": 1, "name": "Cool Hoodie", "price": "$29.99", "shipping": "3-5 days", "colours": "blue, red, green", "description": "made of cotton"},
+    {"id": 2, "name": "TikTok Hoodie", "price": "$39.99", "shipping": "7 days", "colours": "yellow", "description": "made of polyester"},
+    {"id": 3, "name": "Muscle T Shirt", "price": "$49.99", "shipping": "6 days", "colours": "black, white", "description": "drifit, compression tee"},
+    {"id": 4, "name": "TikTok Cap", "price": "$19.99", "shipping": "2-3 days", "colours": "black, white", "description": "moisture wicking, 5 panel"},
     {"id": 5, "name": "Medium Water Bottle", "price": "$14.99", "shipping": "5-7 days", "colours": "pink, green", "description": "thermal insulating, 500ml"},
     {"id": 6, "name": "Small Water Bottle", "price": "$10.99", "shipping": "2 days", "colours": "blue", "description": "thermal insulating, 250ml"},
     {"id": 7, "name": "Large Water Bottle", "price": "$17.99", "shipping": "10 days", "colours": "blue, red", "description": "thermal insulating, 750ml"}
@@ -53,9 +55,10 @@ if not OPENAI_API_KEY:
 @app.post("/chat")
 def chat(request: ChatRequest):
     # Format product info as text for the AI prompt
-    product_text = "\n".join(
-        [f"{p['name']} - Price: {p['price']}, Shipping: {p['shipping']}, Details: {p['description']}" for p in PRODUCTS]
-    )
+    product_text = "\n".join([
+        f"ID:{p['id']} | Name:{p['name']} | Price:{p['price']} | Shipping:{p['shipping']} | Colours:{p['colours']} | Description:{p['description']}"
+        for p in PRODUCTS
+    ])
 
     # Build OpenAI API request
     headers = {
@@ -70,24 +73,31 @@ def chat(request: ChatRequest):
                 "content": f"""
                     You are a TikTok Shop search assistant. Your job is to recommend products from the following list based on the user's query. Follow these rules carefully:
 
-                    1. Only mention metrics or characteristics explicitly requested by the user (price, shipping, colour, volume, etc.).
-                    2. Recommend 0-3 products very concisely. Do not include any product not relevant to the user's explicit criteria.
+                    1. Only mention metrics or characteristics explicitly requested by the user (price, shipping, colour, volume, material, etc.). Note that some info is under description in the list below.
+                    2. If products are suitable, recommend 1-3 products very concisely. If not, you may recommend 0 (but ideally not). Do not include any product not relevant to the user's explicit criteria.
                     Example format for a user requesting cheap bottles with many colours and > 500ml:
                     I found 2 bottles with more than 500ml. Here they are in increasing price. The medium bottle has 2 colours, the large bottle has 3.
+                    Example format for a vague request like im looking for clothing:
+                    Below are some articles of clothing ive found.
+                    For vague requests, just recommend 1-3 suitable products that fit the request, if they exist. If not, recommend 0. 
                     3. Include the numeric product IDs (from the 'id' field in the product list below) in this exact format at the end of ALL your responses:
                     PRODUCT_IDS: [5, 7]
-                    Replace these example numbers with the actual IDs of the products you are recommending. The leftmost ID should be the most suitable product. 
+                    Replace these example numbers with the actual IDs of the products you are recommending. 
+                    The leftmost ID should be the most suitable product. For eg if user asks for cheap products, left most id in the PRODUCT_IDS list is the cheapest. Or if user asks for colour variety, leftmost has most colours. Remember to mention these metrics in your response. 
                     Unsuitable product ids should not be in the list at all. Remember, recommend only 0-3 products.
                     4. If the users query is irrelevant, doesn't request recommendations, or you have 0 recommendations suitable, reply only with:
                     sorry I can't help with that PRODUCT_IDS:[]
                     5. Keep all responses extremely concise—no extra commentary.
-                    6. Use the following product info to answer queries:
+                    6. Remember to only mention metrics queried by the user. For example if they ask for clothing, just give the names, dont mention price or colours. 
+                    But if they ask for cheap bottles, then mention names and price, but dont mention irrelevant metrics (shipping, colours, etc)
+                    Another example is if they ask for head wear with colour variety, then respond with the name, and colour quantity, but not price or shipping etc.
+                    7. Use the following product info to answer queries:
                     {product_text}
                     """
             },
             {"role": "user", "content": request.message} #actual prompt
         ],
-        "max_tokens": 100
+        "max_tokens": 200
     }
 
     

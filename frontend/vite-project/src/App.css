@@ -1,0 +1,122 @@
+/* General page styling */
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* Container */
+.app-container {
+  max-width: 600px;
+  width: 90%;
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* Header */
+.app-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 0, 102, 0.3), 0 0 10px rgba(0, 255, 242, 0.3);
+}
+
+/* Input field */
+input[type="text"] {
+  width: 70%;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #ff0050; /* TikTok pink */
+}
+
+/* Search button */
+button {
+  padding: 10px 16px;
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #ff0050, #00f2ea);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+/* AI response section */
+.response-section {
+  margin-top: 25px;
+  text-align: left;
+}
+
+.response-section h3 {
+  font-size: 1.2rem;
+  color: #ff0050; /* TikTok pink */
+  margin-bottom: 8px;
+}
+
+.response-section p {
+  background-color: #1e1e1e;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #00f2ea; /* TikTok teal */
+}
+
+/* Products section */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Product Card */
+.product-card {
+  background-color: #1e1e1e;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 242, 234, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(255, 0, 80, 0.3);
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.product-card h4 {
+  margin: 10px 0 5px;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.product-card p {
+  color: #bbb;
+  font-size: 0.9rem;
+}
