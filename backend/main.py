@@ -86,7 +86,7 @@ def chat(request: ChatRequest):
                     The leftmost ID should be the most suitable product. For eg if user asks for cheap products, left most id in the PRODUCT_IDS list is the cheapest. Or if user asks for colour variety, leftmost has most colours. Remember to mention these metrics in your response. 
                     Unsuitable product ids should not be in the list at all. Remember, recommend only 0-3 products.
                     4. If the users query is irrelevant, doesn't request recommendations, or you have 0 recommendations suitable, reply only with:
-                    sorry I can't help with that PRODUCT_IDS:[]
+                    Sorry, no matching products! PRODUCT_IDS:[]
                     5. Keep all responses extremely concise—no extra commentary.
                     6. Remember to only mention metrics queried by the user. For example if they ask for clothing, just give the names, dont mention price or colours. 
                     But if they ask for cheap bottles, then mention names and price, but dont mention irrelevant metrics (shipping, colours, etc)
