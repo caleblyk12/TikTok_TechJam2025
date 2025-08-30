@@ -15,7 +15,7 @@ app = FastAPI(title="Tiktok Shop AI search bot")
 # Enable CORS for frontend calls 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with frontend URL 
+    allow_origins=["http://localhost:5173"],  # Replace with frontend URL 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,7 +35,7 @@ PRODUCTS = [
 ]
 
 # ------------------------------
-# Pydantic model for chat requests
+# Pydantic model for chat requests (need these schemas for body of requests)
 # ------------------------------
 class ChatRequest(BaseModel):
     message: str
